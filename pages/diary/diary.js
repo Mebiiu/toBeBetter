@@ -131,5 +131,21 @@ Page({
       title: '查看详情功能开发中',
       icon: 'none'
     });
+  },
+
+  onShareAppMessage() {
+    return {
+      title: 'To Be Better - 觉察日记',
+      desc: '记录当下，觉察自我',
+      path: '/pages/diary/diary'
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: 'To Be Better - 记录当下，觉察自我',
+      query: '',
+      imageUrl: ''
+    };
   }
 })
