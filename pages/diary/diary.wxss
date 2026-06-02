@@ -1,0 +1,294 @@
+.container {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.header {
+  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  padding: 40rpx 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #ffffff;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.add-btn {
+  width: 80rpx;
+  height: 80rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-icon {
+  font-size: 48rpx;
+  color: #ffffff;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.diary-list {
+  padding: 30rpx;
+}
+
+.diary-item {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.diary-date {
+  width: 100rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 24rpx;
+}
+
+.date-day {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #2d3436;
+}
+
+.date-month {
+  font-size: 24rpx;
+  color: #636e72;
+}
+
+.diary-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.diary-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2d3436;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.diary-preview {
+  font-size: 26rpx;
+  color: #636e72;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 8rpx;
+}
+
+.diary-time {
+  font-size: 22rpx;
+  color: #b2bec3;
+}
+
+.diary-mood {
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  margin-left: 16rpx;
+}
+
+.diary-mood.happy {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  color: #d63031;
+}
+
+.diary-mood.calm {
+  background: linear-gradient(135deg, #81ecec 0%, #00cec9 100%);
+  color: #0984e3;
+}
+
+.diary-mood.sad {
+  background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+  color: #636e72;
+}
+
+.diary-mood.anxious {
+  background: linear-gradient(135deg, #fab1a0 0%, #e17055 100%);
+  color: #d63031;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 60rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 32rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #636e72;
+  margin-bottom: 16rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: #b2bec3;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 40rpx;
+}
+
+.modal-content {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1rpx solid #f1f2f6;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #2d3436;
+}
+
+.modal-close {
+  font-size: 48rpx;
+  color: #b2bec3;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.modal-body {
+  padding: 30rpx;
+  max-height: 90vh;
+}
+
+.input-title {
+  width: 100%;
+  padding: 20rpx;
+  border: 1rpx solid #dfe6e9;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  margin-bottom: 24rpx;
+}
+
+.mood-selector {
+  margin-bottom: 24rpx;
+}
+
+.mood-label {
+  font-size: 28rpx;
+  color: #2d3436;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.mood-options {
+  display: flex;
+  gap: 20rpx;
+}
+
+.mood-option {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #f1f2f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  border: 4rpx solid transparent;
+}
+
+.mood-option.active {
+  border-color: #6c5ce7;
+  background: #e8e6ff;
+}
+
+.template-section {
+  margin-bottom: 24rpx;
+}
+
+.section-label {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #6c5ce7;
+  margin-bottom: 12rpx;
+}
+
+.input-section {
+  width: 100%;
+  min-height: 120rpx;
+  padding: 20rpx;
+  border: 1rpx solid #dfe6e9;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background-color: #fafafa;
+}
+
+.modal-footer {
+  padding: 20rpx 30rpx 30rpx;
+  display: flex;
+  gap: 20rpx;
+}
+
+.modal-footer button {
+  flex: 1;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  padding: 20rpx;
+}
+
+.btn-cancel {
+  background: #f1f2f6;
+  color: #636e72;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  color: #ffffff;
+}

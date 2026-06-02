@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="banner">
+    <view class="banner-content">
+      <text class="banner-title">Better And Better</text>
+      <text class="banner-subtitle">成为更好的自己</text>
+    </view>
+  </view>
+
+  <view class="section-container">
+    <view class="section" bindtap="navigateTo" data-type="body">
+      <view class="section-icon body-icon">
+        <text>🏃</text>
+      </view>
+      <view class="section-info">
+        <text class="section-title">身体</text>
+        <text class="section-desc">运动健身、健康饮食</text>
+      </view>
+      <view class="section-arrow">
+        <text>›</text>
+      </view>
+    </view>
+
+    <view class="section" bindtap="navigateTo" data-type="mind">
+      <view class="section-icon mind-icon">
+        <text>🧠</text>
+      </view>
+      <view class="section-info">
+        <text class="section-title">心理</text>
+        <text class="section-desc">冥想放松、情绪管理</text>
+      </view>
+      <view class="section-arrow">
+        <text>›</text>
+      </view>
+    </view>
+
+    <view class="section" bindtap="navigateTo" data-type="fun">
+      <view class="section-icon fun-icon">
+        <text>🎉</text>
+      </view>
+      <view class="section-info">
+        <text class="section-title">轻松一刻</text>
+        <text class="section-desc">趣味内容、休闲娱乐</text>
+      </view>
+      <view class="section-arrow">
+        <text>›</text>
+      </view>
+    </view>
+  </view>
+</view>
