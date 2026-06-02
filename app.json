@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/mind/mind",
-    "pages/diary/diary"
+    "pages/diary/diary",
+    "pages/body/body"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -13,6 +13,10 @@ Page({
       wx.navigateTo({
         url: '/pages/mind/mind'
       });
+    } else if (type === 'body') {
+      wx.navigateTo({
+        url: '/pages/body/body'
+      });
     } else {
       wx.showToast({
         title: '功能开发中',
