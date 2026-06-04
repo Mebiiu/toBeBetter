@@ -7,7 +7,8 @@ Page({
     newObjective: '',
     newEmotion: '',
     newAwareness: '',
-    newAction: ''
+    newAction: '',
+    progressPercent: 0
   },
 
   onLoad() {
@@ -49,26 +50,51 @@ Page({
 
   onTitleInput(e) {
     this.setData({ newTitle: e.detail.value });
+    this.calculateProgress();
   },
 
   onObjectiveInput(e) {
     this.setData({ newObjective: e.detail.value });
+    this.calculateProgress();
   },
 
   onEmotionInput(e) {
     this.setData({ newEmotion: e.detail.value });
+    this.calculateProgress();
   },
 
   onAwarenessInput(e) {
     this.setData({ newAwareness: e.detail.value });
+    this.calculateProgress();
   },
 
   onActionInput(e) {
     this.setData({ newAction: e.detail.value });
+    this.calculateProgress();
   },
 
   selectMood(e) {
     this.setData({ newMood: e.currentTarget.dataset.mood });
+    this.calculateProgress();
+  },
+
+  calculateProgress() {
+    const { newTitle, newObjective, newEmotion, newAwareness, newAction } = this.data;
+    let count = 0;
+    let total = 5;
+    
+    if (newTitle.trim()) count++;
+    if (newObjective.trim()) count++;
+    if (newEmotion.trim()) count++;
+    if (newAwareness.trim()) count++;
+    if (newAction.trim()) count++;
+    
+    const percent = Math.round((count / total) * 100);
+    this.setData({ progressPercent: percent });
+  },
+
+  onInputConfirm() {
+    wx.hideKeyboard();
   },
 
   saveDiary() {

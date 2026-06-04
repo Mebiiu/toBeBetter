@@ -95,6 +95,14 @@ Page({
     };
 
     const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const datetime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    
     const newRecord = {
       id: Date.now(),
       type: newMeal.type,
@@ -104,8 +112,7 @@ Page({
       protein: parseInt(newMeal.protein) || 0,
       carbs: parseInt(newMeal.carbs) || 0,
       fat: parseInt(newMeal.fat) || 0,
-      date: now.toLocaleDateString('zh-CN'),
-      time: now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
+      datetime: datetime,
       timestamp: now.getTime()
     };
 

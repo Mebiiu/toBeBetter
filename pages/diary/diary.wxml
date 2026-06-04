@@ -39,8 +39,14 @@
         <text class="modal-title">写日记</text>
         <text class="modal-close" bindtap="hideModal">×</text>
       </view>
+      
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+      </view>
+      <text class="progress-text">{{progressPercent}}% 完成</text>
+      
       <scroll-view class="modal-body" scroll-y="true">
-        <input class="input-title" placeholder="给今天起个标题..." value="{{newTitle}}" bindinput="onTitleInput" />
+        <input class="input-title" placeholder="给今天起个标题..." value="{{newTitle}}" bindinput="onTitleInput" confirm-type="done" bindconfirm="onInputConfirm" />
         <view class="mood-selector">
           <text class="mood-label">今天的心情：</text>
           <view class="mood-options">
@@ -53,24 +59,25 @@
         
         <view class="template-section">
           <view class="section-label">【客观记录】</view>
-          <textarea class="input-section" placeholder="发生了什么事？记录事实，不评判..." value="{{newObjective}}" bindinput="onObjectiveInput" auto-height />
+          <textarea class="input-section" placeholder="发生了什么事？记录事实，不评判..." value="{{newObjective}}" bindinput="onObjectiveInput" auto-height bindconfirm="onInputConfirm" />
         </view>
         
         <view class="template-section">
           <view class="section-label">【情绪感受】</view>
-          <textarea class="input-section" placeholder="你感受到了什么情绪？..." value="{{newEmotion}}" bindinput="onEmotionInput" auto-height />
+          <textarea class="input-section" placeholder="你感受到了什么情绪？..." value="{{newEmotion}}" bindinput="onEmotionInput" auto-height bindconfirm="onInputConfirm" />
         </view>
         
         <view class="template-section">
           <view class="section-label">【觉察转念】</view>
-          <textarea class="input-section" placeholder="你有什么想法？可以怎么换个角度看？..." value="{{newAwareness}}" bindinput="onAwarenessInput" auto-height />
+          <textarea class="input-section" placeholder="你有什么想法？可以怎么换个角度看？..." value="{{newAwareness}}" bindinput="onAwarenessInput" auto-height bindconfirm="onInputConfirm" />
         </view>
         
         <view class="template-section">
           <view class="section-label">【积极反应】</view>
-          <textarea class="input-section" placeholder="接下来你想怎么做？..." value="{{newAction}}" bindinput="onActionInput" auto-height />
+          <textarea class="input-section" placeholder="接下来你想怎么做？..." value="{{newAction}}" bindinput="onActionInput" auto-height bindconfirm="onInputConfirm" />
         </view>
       </scroll-view>
+      
       <view class="modal-footer">
         <button class="btn-cancel" bindtap="hideModal">取消</button>
         <button class="btn-save" bindtap="saveDiary">保存</button>

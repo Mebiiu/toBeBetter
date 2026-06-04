@@ -41,7 +41,7 @@
           <text class="nutrition-item">🍞{{item.carbs}}g</text>
           <text class="nutrition-item">🥑{{item.fat}}g</text>
         </view>
-        <text class="meal-time">{{item.date}} {{item.time}}</text>
+        <text class="meal-time">{{item.datetime}}</text>
       </view>
       <view class="meal-delete" bindtap="deleteMeal" data-id="{{item.id}}">
         <text>删除</text>
