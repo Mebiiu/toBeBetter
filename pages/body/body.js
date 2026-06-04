@@ -51,10 +51,10 @@ Page({
       return itemDate === today;
     });
     
-    const totalCalories = todayMeals.reduce((sum, item) => sum + (item.calories || 0), 0);
-    const totalProtein = todayMeals.reduce((sum, item) => sum + (item.protein || 0), 0);
-    const totalCarbs = todayMeals.reduce((sum, item) => sum + (item.carbs || 0), 0);
-    const totalFat = todayMeals.reduce((sum, item) => sum + (item.fat || 0), 0);
+    const totalCalories = parseFloat(todayMeals.reduce((sum, item) => sum + (item.calories || 0), 0).toFixed(2));
+    const totalProtein = parseFloat(todayMeals.reduce((sum, item) => sum + (item.protein || 0), 0).toFixed(2));
+    const totalCarbs = parseFloat(todayMeals.reduce((sum, item) => sum + (item.carbs || 0), 0).toFixed(2));
+    const totalFat = parseFloat(todayMeals.reduce((sum, item) => sum + (item.fat || 0), 0).toFixed(2));
     
     this.setData({
       totalCalories,
@@ -219,10 +219,10 @@ Page({
     const seconds = String(now.getSeconds()).padStart(2, '0');
     const datetime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     
-    const totalCalories = foodItems.reduce((sum, item) => sum + item.calories, 0);
-    const totalProtein = foodItems.reduce((sum, item) => sum + item.protein, 0);
-    const totalCarbs = foodItems.reduce((sum, item) => sum + item.carbs, 0);
-    const totalFat = foodItems.reduce((sum, item) => sum + item.fat, 0);
+    const totalCalories = parseFloat(foodItems.reduce((sum, item) => sum + item.calories, 0).toFixed(2));
+    const totalProtein = parseFloat(foodItems.reduce((sum, item) => sum + item.protein, 0).toFixed(2));
+    const totalCarbs = parseFloat(foodItems.reduce((sum, item) => sum + item.carbs, 0).toFixed(2));
+    const totalFat = parseFloat(foodItems.reduce((sum, item) => sum + item.fat, 0).toFixed(2));
     
     const newRecord = {
       id: Date.now(),
