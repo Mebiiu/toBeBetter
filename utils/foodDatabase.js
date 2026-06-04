@@ -82,10 +82,10 @@ function calculateNutrition(foodName, weight, category) {
   
   const ratio = weight / 100;
   return {
-    calories: Math.round(food.calories * ratio),
-    protein: Math.round(food.protein * ratio * 10) / 10,
-    carbs: Math.round(food.carbs * ratio * 10) / 10,
-    fat: Math.round(food.fat * ratio * 10) / 10
+    calories: parseFloat((food.calories * ratio).toFixed(2)),
+    protein: parseFloat((food.protein * ratio).toFixed(2)),
+    carbs: parseFloat((food.carbs * ratio).toFixed(2)),
+    fat: parseFloat((food.fat * ratio).toFixed(2))
   };
 }
 

@@ -133,7 +133,7 @@ Page({
       return;
     }
     
-    if (!foodWeight || parseInt(foodWeight) <= 0) {
+    if (!foodWeight || parseFloat(foodWeight) <= 0) {
       wx.showToast({
         title: '请输入有效重量',
         icon: 'none'
@@ -141,7 +141,7 @@ Page({
       return;
     }
     
-    const weight = parseInt(foodWeight);
+    const weight = parseFloat(foodWeight);
     const nutrition = calculateNutrition(selectedFood, weight, selectedCategory);
     
     const categoryInfo = foodCategories.find(c => c.key === selectedCategory);
@@ -159,10 +159,10 @@ Page({
     };
     
     const updatedFoodItems = [...foodItems, newItem];
-    const tempTotalCalories = updatedFoodItems.reduce((sum, item) => sum + item.calories, 0);
-    const tempTotalProtein = updatedFoodItems.reduce((sum, item) => sum + item.protein, 0);
-    const tempTotalCarbs = updatedFoodItems.reduce((sum, item) => sum + item.carbs, 0);
-    const tempTotalFat = updatedFoodItems.reduce((sum, item) => sum + item.fat, 0);
+    const tempTotalCalories = parseFloat(updatedFoodItems.reduce((sum, item) => sum + item.calories, 0).toFixed(2));
+    const tempTotalProtein = parseFloat(updatedFoodItems.reduce((sum, item) => sum + item.protein, 0).toFixed(2));
+    const tempTotalCarbs = parseFloat(updatedFoodItems.reduce((sum, item) => sum + item.carbs, 0).toFixed(2));
+    const tempTotalFat = parseFloat(updatedFoodItems.reduce((sum, item) => sum + item.fat, 0).toFixed(2));
     
     this.setData({
       foodItems: updatedFoodItems,
@@ -178,10 +178,10 @@ Page({
   deleteFoodItem(e) {
     const id = e.currentTarget.dataset.id;
     const foodItems = this.data.foodItems.filter(item => item.id !== id);
-    const tempTotalCalories = foodItems.reduce((sum, item) => sum + item.calories, 0);
-    const tempTotalProtein = foodItems.reduce((sum, item) => sum + item.protein, 0);
-    const tempTotalCarbs = foodItems.reduce((sum, item) => sum + item.carbs, 0);
-    const tempTotalFat = foodItems.reduce((sum, item) => sum + item.fat, 0);
+    const tempTotalCalories = parseFloat(foodItems.reduce((sum, item) => sum + item.calories, 0).toFixed(2));
+    const tempTotalProtein = parseFloat(foodItems.reduce((sum, item) => sum + item.protein, 0).toFixed(2));
+    const tempTotalCarbs = parseFloat(foodItems.reduce((sum, item) => sum + item.carbs, 0).toFixed(2));
+    const tempTotalFat = parseFloat(foodItems.reduce((sum, item) => sum + item.fat, 0).toFixed(2));
     
     this.setData({ 
       foodItems,
