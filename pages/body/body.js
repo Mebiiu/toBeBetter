@@ -1,19 +1,33 @@
+const { foodCategories, getFoodByCategory, calculateNutrition } = require('../../utils/foodDatabase.js');
+
 Page({
   data: {
     mealList: [],
     showModal: false,
-    newMeal: {
-      type: 'breakfast',
-      name: '',
-      calories: '',
-      protein: '',
-      carbs: '',
-      fat: ''
-    }
+    mealType: 'breakfast',
+    selectedCategory: '',
+    selectedFood: '',
+    foodWeight: '',
+    currentCategoryFoods: [],
+    foodNames: [],
+    foodItems: [],
+    totalCalories: 0,
+    totalProtein: 0,
+    totalCarbs: 0,
+    totalFat: 0,
+    tempTotalCalories: 0,
+    tempTotalProtein: 0,
+    tempTotalCarbs: 0,
+    tempTotalFat: 0
   },
 
   onLoad() {
     this.loadMeals();
+    const defaultFoods = getFoodByCategory('vegetables') || [];
+    this.setData({
+      currentCategoryFoods: defaultFoods,
+      foodNames: defaultFoods.map(f => f.name)
+    });
   },
 
   onShow() {
@@ -24,22 +38,47 @@ Page({
     try {
       const meals = wx.getStorageSync('meals') || [];
       this.setData({ mealList: meals });
+      this.calculateTodayTotal();
     } catch (e) {
       console.error('加载餐食记录失败', e);
     }
   },
 
+  calculateTodayTotal() {
+    const today = new Date().toLocaleDateString('zh-CN');
+    const todayMeals = this.data.mealList.filter(item => {
+      const itemDate = new Date(item.timestamp).toLocaleDateString('zh-CN');
+      return itemDate === today;
+    });
+    
+    const totalCalories = todayMeals.reduce((sum, item) => sum + (item.calories || 0), 0);
+    const totalProtein = todayMeals.reduce((sum, item) => sum + (item.protein || 0), 0);
+    const totalCarbs = todayMeals.reduce((sum, item) => sum + (item.carbs || 0), 0);
+    const totalFat = todayMeals.reduce((sum, item) => sum + (item.fat || 0), 0);
+    
+    this.setData({
+      totalCalories,
+      totalProtein,
+      totalCarbs,
+      totalFat
+    });
+  },
+
   showAddModal() {
+    const defaultFoods = getFoodByCategory('vegetables') || [];
     this.setData({
       showModal: true,
-      newMeal: {
-        type: 'breakfast',
-        name: '',
-        calories: '',
-        protein: '',
-        carbs: '',
-        fat: ''
-      }
+      mealType: 'breakfast',
+      selectedCategory: '',
+      selectedFood: '',
+      foodWeight: '',
+      currentCategoryFoods: defaultFoods,
+      foodNames: defaultFoods.map(f => f.name),
+      foodItems: [],
+      tempTotalCalories: 0,
+      tempTotalProtein: 0,
+      tempTotalCarbs: 0,
+      tempTotalFat: 0
     });
   },
 
@@ -53,35 +92,112 @@ Page({
 
   selectMealType(e) {
     const type = e.currentTarget.dataset.type;
-    this.setData({ 'newMeal.type': type });
+    this.setData({ mealType: type });
   },
 
-  onNameInput(e) {
-    this.setData({ 'newMeal.name': e.detail.value });
+  selectCategory(e) {
+    const category = e.currentTarget.dataset.category;
+    const foods = getFoodByCategory(category) || [];
+    this.setData({
+      selectedCategory: category,
+      selectedFood: '',
+      currentCategoryFoods: foods
+    });
   },
 
-  onCaloriesInput(e) {
-    this.setData({ 'newMeal.calories': e.detail.value });
+  selectFood(e) {
+    const foodName = e.currentTarget.dataset.food;
+    this.setData({ selectedFood: foodName });
   },
 
-  onProteinInput(e) {
-    this.setData({ 'newMeal.protein': e.detail.value });
+  onWeightInput(e) {
+    this.setData({ foodWeight: e.detail.value });
   },
 
-  onCarbsInput(e) {
-    this.setData({ 'newMeal.carbs': e.detail.value });
+  addFoodItem() {
+    const { selectedCategory, selectedFood, foodWeight, foodItems } = this.data;
+    
+    if (!selectedCategory) {
+      wx.showToast({
+        title: '请选择食物类别',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    if (!selectedFood) {
+      wx.showToast({
+        title: '请选择食物',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    if (!foodWeight || parseInt(foodWeight) <= 0) {
+      wx.showToast({
+        title: '请输入有效重量',
+        icon: 'none'
+      });
+      return;
+    }
+    
+    const weight = parseInt(foodWeight);
+    const nutrition = calculateNutrition(selectedFood, weight, selectedCategory);
+    
+    const categoryInfo = foodCategories.find(c => c.key === selectedCategory);
+    
+    const newItem = {
+      id: Date.now(),
+      name: selectedFood,
+      category: selectedCategory,
+      categoryName: categoryInfo ? categoryInfo.name : '',
+      weight: weight,
+      calories: nutrition.calories,
+      protein: nutrition.protein,
+      carbs: nutrition.carbs,
+      fat: nutrition.fat
+    };
+    
+    const updatedFoodItems = [...foodItems, newItem];
+    const tempTotalCalories = updatedFoodItems.reduce((sum, item) => sum + item.calories, 0);
+    const tempTotalProtein = updatedFoodItems.reduce((sum, item) => sum + item.protein, 0);
+    const tempTotalCarbs = updatedFoodItems.reduce((sum, item) => sum + item.carbs, 0);
+    const tempTotalFat = updatedFoodItems.reduce((sum, item) => sum + item.fat, 0);
+    
+    this.setData({
+      foodItems: updatedFoodItems,
+      tempTotalCalories,
+      tempTotalProtein,
+      tempTotalCarbs,
+      tempTotalFat,
+      selectedFood: '',
+      foodWeight: ''
+    });
   },
 
-  onFatInput(e) {
-    this.setData({ 'newMeal.fat': e.detail.value });
+  deleteFoodItem(e) {
+    const id = e.currentTarget.dataset.id;
+    const foodItems = this.data.foodItems.filter(item => item.id !== id);
+    const tempTotalCalories = foodItems.reduce((sum, item) => sum + item.calories, 0);
+    const tempTotalProtein = foodItems.reduce((sum, item) => sum + item.protein, 0);
+    const tempTotalCarbs = foodItems.reduce((sum, item) => sum + item.carbs, 0);
+    const tempTotalFat = foodItems.reduce((sum, item) => sum + item.fat, 0);
+    
+    this.setData({ 
+      foodItems,
+      tempTotalCalories,
+      tempTotalProtein,
+      tempTotalCarbs,
+      tempTotalFat
+    });
   },
 
   saveMeal() {
-    const { newMeal, mealList } = this.data;
+    const { mealType, mealList, foodItems } = this.data;
     
-    if (!newMeal.name.trim()) {
+    if (foodItems.length === 0) {
       wx.showToast({
-        title: '请输入餐食名称',
+        title: '请至少添加一种食物',
         icon: 'none'
       });
       return;
@@ -103,15 +219,21 @@ Page({
     const seconds = String(now.getSeconds()).padStart(2, '0');
     const datetime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     
+    const totalCalories = foodItems.reduce((sum, item) => sum + item.calories, 0);
+    const totalProtein = foodItems.reduce((sum, item) => sum + item.protein, 0);
+    const totalCarbs = foodItems.reduce((sum, item) => sum + item.carbs, 0);
+    const totalFat = foodItems.reduce((sum, item) => sum + item.fat, 0);
+    
     const newRecord = {
       id: Date.now(),
-      type: newMeal.type,
-      typeText: typeMap[newMeal.type],
-      name: newMeal.name,
-      calories: parseInt(newMeal.calories) || 0,
-      protein: parseInt(newMeal.protein) || 0,
-      carbs: parseInt(newMeal.carbs) || 0,
-      fat: parseInt(newMeal.fat) || 0,
+      type: mealType,
+      typeText: typeMap[mealType],
+      foodItems: foodItems,
+      name: foodItems.map(item => `${item.name}(${item.weight}g)`).join('、'),
+      calories: totalCalories,
+      protein: totalProtein,
+      carbs: totalCarbs,
+      fat: totalFat,
       datetime: datetime,
       timestamp: now.getTime()
     };
@@ -122,8 +244,10 @@ Page({
       wx.setStorageSync('meals', updatedList);
       this.setData({ 
         mealList: updatedList,
-        showModal: false 
+        showModal: false,
+        foodItems: []
       });
+      this.calculateTodayTotal();
       wx.showToast({
         title: '保存成功',
         icon: 'success'
@@ -149,6 +273,7 @@ Page({
           try {
             wx.setStorageSync('meals', updatedList);
             this.setData({ mealList: updatedList });
+            this.calculateTodayTotal();
             wx.showToast({
               title: '删除成功',
               icon: 'success'
