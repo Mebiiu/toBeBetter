@@ -3,7 +3,9 @@
     "pages/index/index",
     "pages/mind/mind",
     "pages/diary/diary",
-    "pages/body/body"
+    "pages/body/body",
+    "pages/fun/fun",
+    "pages/fun/talkshow"
   ],
   "window": {
     "backgroundTextStyle": "light",

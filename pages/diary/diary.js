@@ -2,33 +2,42 @@ Page({
   data: {
     diaryList: [],
     showModal: false,
+    showPreview: false,
+    previewDiary: null,
     newTitle: '',
     newMood: 'happy',
     newObjective: '',
     newEmotion: '',
     newAwareness: '',
     newAction: '',
-    progressPercent: 0
+    keyboardHeight: 0
   },
 
-  onLoad() {
+  onLoad: function() {
+    this.loadDiaries();
+    this.listenKeyboard();
+  },
+
+  listenKeyboard: function() {
+    wx.onKeyboardHeightChange(function(res) {
+      this.setData({ keyboardHeight: res.height });
+    }.bind(this));
+  },
+
+  onShow: function() {
     this.loadDiaries();
   },
 
-  onShow() {
-    this.loadDiaries();
-  },
-
-  loadDiaries() {
+  loadDiaries: function() {
     try {
-      const diaries = wx.getStorageSync('diaries') || [];
+      var diaries = wx.getStorageSync('diaries') || [];
       this.setData({ diaryList: diaries });
     } catch (e) {
       console.error('加载日记失败', e);
     }
   },
 
-  showAddModal() {
+  showAddModal: function() {
     this.setData({
       showModal: true,
       newTitle: '',
@@ -40,111 +49,84 @@ Page({
     });
   },
 
-  hideModal() {
+  hideModal: function() {
     this.setData({ showModal: false });
   },
 
-  onModalMaskTap(e) {
-    this.setData({ showModal: false });
+  onModalMaskTap: function(e) {
+    if (e.target === e.currentTarget) {
+      this.hideModal();
+    }
   },
 
-  onTitleInput(e) {
+  selectMood: function(e) {
+    var mood = e.currentTarget.dataset.mood;
+    this.setData({ newMood: mood });
+  },
+
+  onTitleInput: function(e) {
     this.setData({ newTitle: e.detail.value });
-    this.calculateProgress();
   },
 
-  onObjectiveInput(e) {
+  onObjectiveInput: function(e) {
     this.setData({ newObjective: e.detail.value });
-    this.calculateProgress();
   },
 
-  onEmotionInput(e) {
+  onEmotionInput: function(e) {
     this.setData({ newEmotion: e.detail.value });
-    this.calculateProgress();
   },
 
-  onAwarenessInput(e) {
+  onAwarenessInput: function(e) {
     this.setData({ newAwareness: e.detail.value });
-    this.calculateProgress();
   },
 
-  onActionInput(e) {
+  onActionInput: function(e) {
     this.setData({ newAction: e.detail.value });
-    this.calculateProgress();
   },
 
-  selectMood(e) {
-    this.setData({ newMood: e.currentTarget.dataset.mood });
-    this.calculateProgress();
-  },
-
-  calculateProgress() {
-    const { newTitle, newObjective, newEmotion, newAwareness, newAction } = this.data;
-    let count = 0;
-    let total = 5;
-    
-    if (newTitle.trim()) count++;
-    if (newObjective.trim()) count++;
-    if (newEmotion.trim()) count++;
-    if (newAwareness.trim()) count++;
-    if (newAction.trim()) count++;
-    
-    const percent = Math.round((count / total) * 100);
-    this.setData({ progressPercent: percent });
-  },
-
-  onInputConfirm() {
+  onInputConfirm: function() {
     wx.hideKeyboard();
   },
 
-  saveDiary() {
-    const { newTitle, newMood, newObjective, newEmotion, newAwareness, newAction, diaryList } = this.data;
+  saveDiary: function() {
+    var now = new Date();
+    var date = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    var time = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
     
-    if (!newObjective.trim() && !newEmotion.trim() && !newAwareness.trim() && !newAction.trim()) {
-      wx.showToast({
-        title: '请至少填写一项内容',
-        icon: 'none'
-      });
-      return;
-    }
-
-    const now = new Date();
-    const moodMap = {
+    var moodTextMap = {
       happy: '开心',
       calm: '平静',
       sad: '难过',
       anxious: '焦虑'
     };
 
-    const newDiary = {
+    var newDiary = {
       id: Date.now(),
-      title: newTitle,
-      mood: newMood,
-      moodText: moodMap[newMood],
-      objective: newObjective,
-      emotion: newEmotion,
-      awareness: newAwareness,
-      action: newAction,
+      title: this.data.newTitle,
+      mood: this.data.newMood,
+      moodText: moodTextMap[this.data.newMood],
+      objective: this.data.newObjective,
+      emotion: this.data.newEmotion,
+      awareness: this.data.newAwareness,
+      action: this.data.newAction,
+      date: date,
+      time: time,
       day: now.getDate(),
-      month: (now.getMonth() + 1) + '月',
-      date: now.toLocaleDateString('zh-CN'),
-      time: now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }),
-      timestamp: now.getTime()
+      month: (now.getMonth() + 1) + '月'
     };
 
-    const updatedList = [newDiary, ...diaryList];
-    
     try {
-      wx.setStorageSync('diaries', updatedList);
-      this.setData({ 
-        diaryList: updatedList,
-        showModal: false 
-      });
+      var diaries = wx.getStorageSync('diaries') || [];
+      diaries.unshift(newDiary);
+      wx.setStorageSync('diaries', diaries);
+      this.setData({ diaryList: diaries });
+      this.hideModal();
       wx.showToast({
         title: '保存成功',
         icon: 'success'
       });
     } catch (e) {
+      console.error('保存日记失败', e);
       wx.showToast({
         title: '保存失败',
         icon: 'none'
@@ -152,14 +134,47 @@ Page({
     }
   },
 
-  viewDiary(e) {
+  viewDiary: function(e) {
     wx.showToast({
       title: '查看详情功能开发中',
       icon: 'none'
     });
   },
 
-  onShareAppMessage() {
+  shareDiary: function(e) {
+    var id = e.currentTarget.dataset.id;
+    var diaryList = this.data.diaryList;
+    var diary = null;
+    
+    for (var i = 0; i < diaryList.length; i++) {
+      if (diaryList[i].id === id) {
+        diary = diaryList[i];
+        break;
+      }
+    }
+    
+    if (!diary) {
+      wx.showToast({
+        title: '未找到日记',
+        icon: 'none'
+      });
+      return;
+    }
+
+    this.setData({
+      previewDiary: diary,
+      showPreview: true
+    });
+  },
+
+  hidePreview: function() {
+    this.setData({
+      showPreview: false,
+      previewDiary: null
+    });
+  },
+
+  onShareAppMessage: function() {
     return {
       title: 'To Be Better - 觉察日记',
       desc: '记录当下，觉察自我',
@@ -167,11 +182,11 @@ Page({
     };
   },
 
-  onShareTimeline() {
+  onShareTimeline: function() {
     return {
       title: 'To Be Better - 记录当下，觉察自我',
       query: '',
       imageUrl: ''
     };
   }
-})
+});

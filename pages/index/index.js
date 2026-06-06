@@ -17,6 +17,10 @@ Page({
       wx.navigateTo({
         url: '/pages/body/body'
       });
+    } else if (type === 'fun') {
+      wx.navigateTo({
+        url: '/pages/fun/fun'
+      });
     } else {
       wx.showToast({
         title: '功能开发中',

@@ -1,0 +1,21 @@
+<view class="container">
+  <view class="header">
+    <text class="title">轻松一刻</text>
+    <text class="subtitle">放松心情，快乐生活</text>
+  </view>
+
+  <view class="function-list">
+    <view class="function-item" bindtap="navigateTo" data-type="talkShow">
+      <view class="function-icon talkshow-icon">
+        <text>🎤</text>
+      </view>
+      <view class="function-info">
+        <text class="function-title">脱口秀金句</text>
+        <text class="function-desc">开心一笑，放松心情</text>
+      </view>
+      <view class="function-arrow">
+        <text>›</text>
+      </view>
+    </view>
+  </view>
+</view>
