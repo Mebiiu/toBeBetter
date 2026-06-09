@@ -1,18 +1,48 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/mind/mind",
-    "pages/diary/diary",
-    "pages/body/body",
-    "pages/fun/fun",
-    "pages/fun/talkshow"
+    "pages/food/food",
+    "pages/exercise/exercise",
+    "pages/stats/stats"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#667eea",
-    "navigationBarTitleText": "To Be Better",
+    "navigationBarBackgroundColor": "#ff6b6b",
+    "navigationBarTitleText": "减脂热量助手",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#f5f7fa"
+    "backgroundColor": "#f8f9fa"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ff6b6b",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
+      },
+      {
+        "pagePath": "pages/food/food",
+        "text": "饮食",
+        "iconPath": "images/food.png",
+        "selectedIconPath": "images/food-active.png"
+      },
+      {
+        "pagePath": "pages/exercise/exercise",
+        "text": "运动",
+        "iconPath": "images/exercise.png",
+        "selectedIconPath": "images/exercise-active.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计",
+        "iconPath": "images/stats.png",
+        "selectedIconPath": "images/stats-active.png"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json"
 }

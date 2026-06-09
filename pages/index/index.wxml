@@ -1,49 +1,71 @@
 <view class="container">
   <view class="banner">
     <view class="banner-content">
-      <text class="banner-title">Better And Better</text>
-      <text class="banner-subtitle">成为更好的自己</text>
+      <text class="date">{{currentDate}}</text>
+      <text class="title">今日热量</text>
+      <view class="calories-display">
+        <text class="calories-value">{{dailyStats.totalCalories}}</text>
+        <text class="calories-unit">kcal</text>
+      </view>
+      <view class="calories-info">
+        <text>目标: {{dailyStats.targetCalories}} kcal</text>
+      </view>
+    </view>
+    <view class="progress-ring">
+      <view class="progress-bg"></view>
+      <view class="progress-fill" style="--progress: {{progressPercent}}%"></view>
+      <view class="progress-inner">
+        <text class="progress-text">{{progressPercent}}%</text>
+      </view>
     </view>
   </view>
 
-  <view class="section-container">
-    <view class="section" bindtap="navigateTo" data-type="body">
-      <view class="section-icon body-icon">
-        <text>🏃</text>
+  <view class="stats-row">
+    <view class="stat-item">
+      <view class="stat-icon food-icon">🍔</view>
+      <view class="stat-info">
+        <text class="stat-value">{{dailyStats.foodCalories}}</text>
+        <text class="stat-label">饮食摄入</text>
       </view>
-      <view class="section-info">
-        <text class="section-title">身体</text>
-        <text class="section-desc">运动健身、健康饮食</text>
+    </view>
+    <view class="stat-item">
+      <view class="stat-icon exercise-icon">🏃</view>
+      <view class="stat-info">
+        <text class="stat-value">{{dailyStats.exerciseCalories}}</text>
+        <text class="stat-label">运动消耗</text>
       </view>
-      <view class="section-arrow">
-        <text>›</text>
+    </view>
+    <view class="stat-item">
+      <view class="stat-icon balance-icon">⚖️</view>
+      <view class="stat-info">
+        <text class="stat-value balance">{{dailyStats.balance}}</text>
+        <text class="stat-label">热量差</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">今日记录</text>
+    </view>
+    
+    <view class="record-list">
+      <view class="record-item" wx:for="{{todayRecords}}" wx:key="id">
+        <view class="record-icon">{{item.type === 'food' ? '🍽️' : '💪'}}</view>
+        <view class="record-content">
+          <text class="record-name">{{item.name}}</text>
+          <text class="record-desc">{{item.desc}}</text>
+        </view>
+        <view class="record-calories">
+          <text class="{{item.type === 'food' ? 'positive' : 'negative'}}">{{item.type === 'food' ? '+' : '-'}}{{item.calories}} kcal</text>
+        </view>
       </view>
     </view>
 
-    <view class="section" bindtap="navigateTo" data-type="mind">
-      <view class="section-icon mind-icon">
-        <text>🧠</text>
-      </view>
-      <view class="section-info">
-        <text class="section-title">心理</text>
-        <text class="section-desc">冥想放松、情绪管理</text>
-      </view>
-      <view class="section-arrow">
-        <text>›</text>
-      </view>
-    </view>
-
-    <view class="section" bindtap="navigateTo" data-type="fun">
-      <view class="section-icon fun-icon">
-        <text>🎉</text>
-      </view>
-      <view class="section-info">
-        <text class="section-title">轻松一刻</text>
-        <text class="section-desc">趣味内容、休闲娱乐</text>
-      </view>
-      <view class="section-arrow">
-        <text>›</text>
-      </view>
+    <view class="empty-state" wx:if="{{todayRecords.length === 0}}">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">今日暂无记录</text>
+      <text class="empty-hint">点击下方按钮开始记录</text>
     </view>
   </view>
 </view>

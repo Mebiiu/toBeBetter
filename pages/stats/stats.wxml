@@ -1,0 +1,99 @@
+<view class="container">
+  <view class="header">
+    <text class="header-title">数据统计</text>
+    <text class="header-subtitle">追踪你的减脂进度</text>
+  </view>
+
+  <view class="stats-overview">
+    <view class="overview-card main-card">
+      <view class="card-icon">📊</view>
+      <view class="card-content">
+        <text class="card-value">{{weeklyStats.totalCalories}}</text>
+        <text class="card-label">本周摄入 (kcal)</text>
+      </view>
+    </view>
+    <view class="overview-card">
+      <view class="card-icon">🔥</view>
+      <view class="card-content">
+        <text class="card-value">{{weeklyStats.exerciseCalories}}</text>
+        <text class="card-label">本周消耗 (kcal)</text>
+      </view>
+    </view>
+    <view class="overview-card">
+      <view class="card-icon">⚖️</view>
+      <view class="card-content">
+        <text class="card-value">{{weeklyStats.balance}}</text>
+        <text class="card-label">本周热量差</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">每日摄入趋势</text>
+    </view>
+    <view class="chart-container">
+      <view class="chart-bars">
+        <view class="bar-item" wx:for="{{dailyCalories}}" wx:key="index">
+          <view class="bar-wrapper">
+            <view class="bar" style="height: {{item.percent}}%;" />
+          </view>
+          <text class="bar-label">{{item.day}}</text>
+          <text class="bar-value">{{item.calories}}kcal</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">运动类型分布</text>
+    </view>
+    <view class="pie-chart-container">
+      <view class="pie-chart">
+        <view class="pie-slice slice-1" style="--percent: {{exerciseDistribution[0].percent}}%" />
+        <view class="pie-slice slice-2" style="--percent: {{exerciseDistribution[1].percent}}%" />
+        <view class="pie-slice slice-3" style="--percent: {{exerciseDistribution[2].percent}}%" />
+        <view class="pie-center">
+          <text class="center-value">{{totalExerciseTime}}</text>
+          <text class="center-label">分钟</text>
+        </view>
+      </view>
+      <view class="pie-legend">
+        <view class="legend-item" wx:for="{{exerciseDistribution}}" wx:key="name">
+          <view class="legend-color" style="background: {{item.color}};" />
+          <text class="legend-name">{{item.name}}</text>
+          <text class="legend-value">{{item.time}}分钟</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">健康指标</text>
+    </view>
+    <view class="health-grid">
+      <view class="health-item">
+        <text class="health-icon">🎯</text>
+        <text class="health-value">{{healthGoals.completed}}</text>
+        <text class="health-label">已完成目标</text>
+      </view>
+      <view class="health-item">
+        <text class="health-icon">📅</text>
+        <text class="health-value">{{healthGoals.streak}}</text>
+        <text class="health-label">连续打卡</text>
+      </view>
+      <view class="health-item">
+        <text class="health-icon">💧</text>
+        <text class="health-value">{{healthGoals.water}}</text>
+        <text class="health-label">今日喝水</text>
+      </view>
+      <view class="health-item">
+        <text class="health-icon">😴</text>
+        <text class="health-value">{{healthGoals.sleep}}</text>
+        <text class="health-label">昨晚睡眠</text>
+      </view>
+    </view>
+  </view>
+</view>
